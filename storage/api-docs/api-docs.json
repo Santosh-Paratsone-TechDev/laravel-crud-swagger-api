@@ -1,0 +1,415 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel 11 API Documentation",
+        "description": "Swagger documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login and get token",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "admin@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|XyzAbc123..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Santosh"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "santosh@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|Abc123..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List users",
+                "description": "Get all users",
+                "operationId": "566aed8efb436ca506e0ef51a032ecd9",
+                "responses": {
+                    "200": {
+                        "description": "List of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Santosh"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "santosh@example.com"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user",
+                "operationId": "be551c1d694a01c164966f58bfa77013",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "New User"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "new@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "New User"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "new@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Email already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email already exists"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Bearer token missing or invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user by ID",
+                "operationId": "6f51bd5fa2dddcd25e44cfa53dcbd10a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Santosh"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "santosh@example.com"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user",
+                "operationId": "070e37fc9aff78ae73860751bc990ed3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Name"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "updated@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete user",
+                "operationId": "0b4133ed462528a5e648b88ead11e929",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authentication endpoints"
+        },
+        {
+            "name": "Users",
+            "description": "User management endpoints"
+        }
+    ]
+}
