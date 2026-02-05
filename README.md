@@ -1,13 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel CRUD Swagger API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive Laravel REST API with Swagger documentation for managing Users, Products, and Orders with role-based access control.
 
-## About Laravel
+## Quick Start
+
+### Prerequisites
+- PHP >= 8.1
+- Composer
+- MySQL or SQLite
+- Git
+
+### Clone the Project
+
+```bash
+git clone https://github.com/Santosh-Paratsone-TechDev/laravel-crud-swagger-api.git
+cd laravel-crud-swagger-api
+```
+
+### Local Setup Steps
+
+#### 1. Install PHP Dependencies
+```bash
+composer install
+```
+
+#### 2. Configure Environment
+```bash
+cp .env.example .env
+```
+
+Edit `.env` file and configure:
+```env
+APP_NAME="Laravel CRUD Swagger API"
+APP_URL=http://localhost:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_crud_api
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+#### 3. Generate Application Key
+```bash
+php artisan key:generate
+```
+
+#### 4. Create Database & Run Migrations
+```bash
+# Create the database first (manually)
+# Then run migrations:
+php artisan migrate
+```
+
+#### 5. Seed Sample Data
+```bash
+php artisan db:seed
+```
+
+#### 6. Install & Build Frontend Assets (Optional)
+```bash
+npm install
+npm run build
+```
+
+#### 7. Generate Swagger Documentation
+```bash
+php artisan l5-swagger:generate
+```
+
+#### 8. Start Development Server
+```bash
+php artisan serve
+```
+
+The application will be available at:
+- **API Base URL**: http://localhost:8000/api
+- **Swagger UI**: http://localhost:8000/api/documentation
+- **Learning Page**: http://localhost:8000
+
+---
+
+## About This Project
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
@@ -19,63 +94,356 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Robust background job processing](https://laravel.com/docs/queues).
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## API Features
 
-## Learning Sandbox Page
+- **User Management**: CRUD operations for users with role-based access
+- **Product Management**: Create, Read, Update, Delete products (authenticated users)
+- **Product Inventory**: Track product stock with quantity management
+- **Role-Based Access Control**: Admin, user, and guest roles
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
+- **Authentication**: Laravel Sanctum for API authentication
+- **Database Migrations**: Easy database schema management
+- **Seeders**: Sample data for testing and development
 
-A simple learning landing page is available when running the app locally. It summarizes the API, provides examples, and links to the interactive Swagger UI.
+## API Documentation
 
-- Local page: http://127.0.0.1:8000
-- Swagger UI: http://127.0.0.1:8000/api/documentation
+Interactive API documentation is available at: **http://localhost:8000/api/documentation**
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## API Authentication (admin-only create/update/delete users) ⚙️
-
-- Create a personal access token for the admin user (example using Tinker):
-
-```php
-$user = App\Models\User::where('email', 'admin@digihost.com')->first();
-$token = $user->createToken('api')->plainTextToken; // copy the token
-```
-
-- In Swagger UI (open `/api/documentation`) click **Authorize**, choose `bearerAuth` and paste the token (you can include the `Bearer ` prefix if you prefer).
-
-- Requests that require admin role: `POST /api/users`, `PUT /api/users/{id}`, `DELETE /api/users/{id}`. These routes require `Authorization: Bearer <token>` and will be allowed only for users with role `admin`.
+The Swagger UI provides:
+- All available endpoints
+- Request/response examples
+- Parameter definitions
+- Authentication setup
 
 ---
 
+## API Endpoints
+
+### Public Endpoints (No Authentication Required)
+
+#### Users
+- **GET** `/api/users` - List all users (paginated)
+- **GET** `/api/users/{id}` - Get user details
+
+#### Products
+- **GET** `/api/products` - List all products (paginated)
+- **GET** `/api/products/{id}` - Get product details
+
+---
+
+### Protected Endpoints (Authentication Required)
+
+#### Users (Authenticated)
+- **POST** `/api/users` - Create new user
+- **PUT** `/api/users/{id}` - Update user
+- **DELETE** `/api/users/{id}` - Delete user
+
+#### Products (Authenticated)
+- **POST** `/api/products` - Create new product
+- **PUT** `/api/products/{id}` - Update product
+- **DELETE** `/api/products/{id}` - Delete product
+
+---
+
+## Product API CRUD Details
+
+### Product Model Structure
+
+**File**: [app/Models/Product.php](app/Models/Product.php)
+
+Fields:
+- `id` - Primary key
+- `user_id` - Foreign key (vendor/admin user)
+- `name` - Product name (required, unique)
+- `description` - Product description (optional)
+- `price` - Product price (required, decimal)
+- `stock` - Stock quantity (required, integer)
+- `image` - Product image path (optional)
+- `created_at`, `updated_at` - Timestamps
+
+### Create Product
+
+**Endpoint**: `POST /api/products`
+
+**Authentication**: Required (Bearer Token)
+
+**Note**: Product is automatically assigned `user_id=1` (default vendor/admin user)
+
+**Request Body**:
+```json
+{
+  "name": "Laptop Pro",
+  "description": "High-performance laptop",
+  "price": 1299.99,
+  "stock": 50,
+  "image": "/images/laptop.jpg"
+}
+```
+
+**Success Response** (201):
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "name": "Laptop Pro",
+  "description": "High-performance laptop",
+  "price": "1299.99",
+  "stock": 50,
+  "image": "/images/laptop.jpg",
+  "created_at": "2026-02-06T10:30:00Z",
+  "updated_at": "2026-02-06T10:30:00Z"
+}
+```
+
+### Get All Products
+
+**Endpoint**: `GET /api/products`
+
+**Query Parameters**:
+- `per_page` - Items per page (default: 15)
+
+**Example**: `/api/products?per_page=10`
+
+**Success Response** (200):
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "name": "Laptop Pro",
+      "description": "High-performance laptop",
+      "price": "1299.99",
+      "stock": 50,
+      "image": "/images/laptop.jpg",
+      "created_at": "2026-02-06T10:30:00Z",
+      "updated_at": "2026-02-06T10:30:00Z"
+    }
+  ],
+  "links": {
+    "first": "http://localhost:8000/api/products?page=1",
+    "last": "http://localhost:8000/api/products?page=1",
+    "prev": null,
+    "next": null
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "path": "http://localhost:8000/api/products",
+    "per_page": 15,
+    "to": 1,
+    "total": 1
+  }
+}
+```
+
+### Get Product by ID
+
+**Endpoint**: `GET /api/products/{id}`
+
+**Example**: `/api/products/1`
+
+**Success Response** (200):
+```json
+{
+  "id": 1,
+  "name": "Laptop Pro",
+  "description": "High-performance laptop",
+  "price": "1299.99",
+  "quantity": 50,
+  "sku": "LAPTOP-001",
+  "category": "Electronics",
+  "created_at": "2026-02-06T10:30:00Z",
+  "updated_at": "2026-02-06T10:30:00Z"
+}
+```
+
+**Error Response** (404):
+```json
+{
+  "message": "Not found"
+}
+```
+
+### Update Product
+
+**Endpoint**: `PUT /api/products/{id}`
+
+**Authentication**: Required (Bearer Token)
+
+**Note**: Product is automatically updated with `user_id=1` (default vendor/admin user)
+
+**Example**: `/api/products/1`
+
+**Request Body** (all fields optional):
+```json
+{
+  "name": "Laptop Pro Max",
+  "price": 1599.99,
+  "stock": 45,
+  "image": "/images/laptop-max.jpg"
+}
+```
+
+**Success Response** (200):
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "name": "Laptop Pro Max",
+  "description": "High-performance laptop",
+  "price": "1599.99",
+  "stock": 45,
+  "image": "/images/laptop-max.jpg",
+  "created_at": "2026-02-06T10:30:00Z",
+  "updated_at": "2026-02-06T10:35:00Z"
+}
+```
+
+### Delete Product
+
+**Endpoint**: `DELETE /api/products/{id}`
+
+**Authentication**: Required (Bearer Token)
+
+**Note**: Before deletion, product user_id is set to 1 (default vendor/admin user)
+
+**Example**: `/api/products/1`
+
+**Success Response** (204):
+- No content
+
+**Error Response** (404):
+```json
+{
+  "message": "Not found"
+}
+```
+
+---
+
+## Validation Rules
+
+### Store Product (Create)
+
+| Field | Rules |
+|-------|-------|
+| name | required, string, max:255, unique |
+| description | nullable, string |
+| price | required, numeric, min:0, max:999999.99 |
+| stock | required, integer, min:0 |
+| image | nullable, string, max:500 |
+
+### Update Product
+
+| Field | Rules |
+|-------|-------|
+| name | sometimes, string, max:255, unique |
+| description | nullable, string |
+| price | sometimes, numeric, min:0, max:999999.99 |
+| stock | sometimes, integer, min:0 |
+| image | nullable, string, max:500 |
+
+---
+
+## File Structure
+
+### Product API Files Created
+
+```
+app/
+├── Models/
+│   └── Product.php                 # Product model with relationships
+├── Http/
+│   ├── Controllers/Api/
+│   │   └── ProductController.php   # CRUD operations with Swagger docs
+│   ├── Requests/
+│   │   ├── StoreProductRequest.php # Validation for create
+│   │   └── UpdateProductRequest.php # Validation for update
+│   └── Resources/
+│       └── ProductResource.php     # API response formatting
+```
+
+### Routes
+
+File: [routes/api.php](routes/api.php)
+
+```php
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);   // Public
+    Route::get('{product}', [ProductController::class, 'show']); // Public
+    Route::post('/', [ProductController::class, 'store'])->middleware('bearer-token');  // Auth required
+    Route::put('{product}', [ProductController::class, 'update'])->middleware('bearer-token'); // Auth required
+    Route::delete('{product}', [ProductController::class, 'destroy'])->middleware('bearer-token'); // Auth required
+});
+```
+
+## Database Schema
+
+### Tables
+- `users` - User accounts with roles
+- `products` - Product inventory
+- `orders` - Customer orders
+- `order_items` - Order line items
+- `personal_access_tokens` - API authentication tokens
+
+## API Authentication
+
+### Create Admin Token (for testing)
+```php
+$user = App\Models\User::where('email', 'admin@digihost.com')->first();
+$token = $user->createToken('api-token')->plainTextToken;
+echo $token; // Copy this token
+```
+
+### Authenticate Requests
+1. Open Swagger UI: http://localhost:8000/api/documentation
+2. Click **Authorize** button
+3. Select `bearerAuth` 
+4. Paste your token (with or without `Bearer ` prefix)
+
+### Protected Routes (Admin Only)
+- `POST /api/users` - Create user
+- `PUT /api/users/{id}` - Update user
+- `DELETE /api/users/{id}` - Delete user
+
+---
+
+## Troubleshooting
+
+### Database Connection Error
+Ensure MySQL service is running and `.env` credentials are correct.
+
+### Storage Permissions Error
+```bash
+php artisan storage:link
+chmod -R 775 storage bootstrap/cache
+```
+
+### Clear Cache
+```bash
+php artisan optimize:clear
+php artisan view:clear
+php artisan config:clear
+```
+
+### Swagger Documentation Not Loading
+```bash
+php artisan l5-swagger:generate
+php artisan l5-swagger:publish-config
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues and questions, please open a [GitHub Issue](https://github.com/Santosh-Paratsone-TechDev/laravel-crud-swagger-api/issues).
+
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

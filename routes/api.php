@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DebugController;
+use App\Http\Controllers\Api\ProductController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
@@ -34,6 +35,14 @@ Route::prefix('users')->group(function () {
     Route::get('{user}', [UserController::class, 'show']); // Show (public)
     Route::put('{user}', [UserController::class, 'update'])->middleware('bearer-token'); // Update (requires token)
     Route::delete('{user}', [UserController::class, 'destroy'])->middleware('bearer-token'); // Delete (requires token)
+});
+
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);   // List (public)
+    Route::get('{product}', [ProductController::class, 'show']); // Show (public)
+    Route::post('/', [ProductController::class, 'store'])->middleware('bearer-token');  // Create (requires token)
+    Route::put('{product}', [ProductController::class, 'update'])->middleware('bearer-token'); // Update (requires token)
+    Route::delete('{product}', [ProductController::class, 'destroy'])->middleware('bearer-token'); // Delete (requires token)
 });
 
 Route::get('/debug', [DebugController::class, 'info'])->middleware('bearer-token');

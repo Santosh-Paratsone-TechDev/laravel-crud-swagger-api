@@ -32,3 +32,4 @@ composer.lock
 .php-cs-fixer.cache
 .phpstan.result.cache
 /.env.testing
+/rough.txt
