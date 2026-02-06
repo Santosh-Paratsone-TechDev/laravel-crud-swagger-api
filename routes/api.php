@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DebugController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\OrderController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
@@ -43,6 +44,14 @@ Route::prefix('products')->group(function () {
     Route::post('/', [ProductController::class, 'store'])->middleware('bearer-token');  // Create (requires token)
     Route::put('{product}', [ProductController::class, 'update'])->middleware('bearer-token'); // Update (requires token)
     Route::delete('{product}', [ProductController::class, 'destroy'])->middleware('bearer-token'); // Delete (requires token)
+});
+
+Route::prefix('orders')->group(function () {
+    Route::get('/', [OrderController::class, 'index']);   // List (public)
+    Route::get('{order}', [OrderController::class, 'show']); // Show (public)
+    Route::post('/', [OrderController::class, 'store'])->middleware('bearer-token');  // Create (requires token)
+    Route::put('{order}', [OrderController::class, 'update'])->middleware('bearer-token'); // Update (requires token)
+    Route::delete('{order}', [OrderController::class, 'destroy'])->middleware('bearer-token'); // Delete (requires token)
 });
 
 Route::get('/debug', [DebugController::class, 'info'])->middleware('bearer-token');

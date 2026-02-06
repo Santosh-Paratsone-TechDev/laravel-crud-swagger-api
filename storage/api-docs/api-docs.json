@@ -119,6 +119,89 @@
                 }
             }
         },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "List all orders",
+                "description": "Get all orders with pagination. Each order includes its related order items.",
+                "operationId": "955bb77a45ae173a485fadb8befed93f",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of orders with order items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Order"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get order details",
+                "description": "Get a specific order by ID with all related order items",
+                "operationId": "88d27387b1e409e075c18609d4a0c300",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Order ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order details with order items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    }
+                }
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -164,79 +247,6 @@
                         }
                     }
                 }
-            },
-            "post": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Create a new product",
-                "description": "Create a new product (authenticated users only). User ID defaults to 1.",
-                "operationId": "785644b7d7dd38af4b51dafd0fbc1b6d",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "price",
-                                    "stock"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "Laptop Pro"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "High-performance laptop",
-                                        "nullable": true
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 1299.99
-                                    },
-                                    "stock": {
-                                        "type": "integer",
-                                        "example": 50
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "maxLength": 500,
-                                        "example": "/images/laptop.jpg",
-                                        "nullable": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Product created successfully with user_id=1",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Product"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Bearer token missing or invalid"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/api/products/{id}": {
@@ -273,123 +283,6 @@
                         "description": "Product not found"
                     }
                 }
-            },
-            "put": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Update a product",
-                "description": "Update an existing product (authenticated users only). User ID defaults to 1.",
-                "operationId": "416e4959a3919547eb609d87e3db9135",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Product ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "Laptop Pro Max"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Updated description",
-                                        "nullable": true
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 1199.99
-                                    },
-                                    "stock": {
-                                        "type": "integer",
-                                        "example": 45
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "maxLength": 500,
-                                        "example": "/images/laptop-max.jpg",
-                                        "nullable": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Product updated successfully with user_id=1",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Product"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    },
-                    "422": {
-                        "description": "Validation error"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Bearer token missing or invalid"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Delete a product",
-                "description": "Delete an existing product (authenticated users only). Product user_id is set to 1 before deletion.",
-                "operationId": "b49ce9f3cb168b233245548fb4ef36d3",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Product ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Product deleted successfully"
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Bearer token missing or invalid"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/api/users": {
@@ -668,6 +561,88 @@
     },
     "components": {
         "schemas": {
+            "OrderItem": {
+                "title": "OrderItem",
+                "description": "Order item resource",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "order_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "price": {
+                        "type": "string",
+                        "example": "1299.99"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-02-06T10:30:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-02-06T10:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Order": {
+                "title": "Order",
+                "description": "Order resource",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "total_amount": {
+                        "type": "string",
+                        "example": "2599.98"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "paid",
+                            "shipped",
+                            "delivered"
+                        ],
+                        "example": "pending"
+                    },
+                    "order_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-02-06T10:30:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-02-06T10:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Product": {
                 "title": "Product",
                 "description": "Product resource",
@@ -728,6 +703,10 @@
         {
             "name": "Auth",
             "description": "Authentication endpoints - Login, Register, Logout"
+        },
+        {
+            "name": "Orders",
+            "description": "Order management endpoints - CRUD operations"
         },
         {
             "name": "Products",

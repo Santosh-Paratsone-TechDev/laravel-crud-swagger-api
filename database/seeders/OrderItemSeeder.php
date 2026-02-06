@@ -12,10 +12,12 @@ class OrderItemSeeder extends Seeder {
         $products = Product::all();
 
         Order::all()->each(function ($order) use ($products) {
-            OrderItem::factory()->count(3)->create([
-                'order_id' => $order->id,
-                'product_id' => $products->random()->id,
-            ]);
+            for ($i = 0; $i < 3; $i++) {
+                OrderItem::factory()->create([
+                    'order_id' => $order->id,
+                    'product_id' => $products->random()->id,
+                ]);
+            }
         });
     }
 }

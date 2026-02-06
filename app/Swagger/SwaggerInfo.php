@@ -34,6 +34,11 @@ namespace App\Swagger;
  *     name="Products",
  *     description="Product management endpoints - CRUD operations"
  * )
+ * 
+ * @OA\Tag(
+ *     name="Orders",
+ *     description="Order management endpoints - CRUD operations"
+ * )
  */
 class SwaggerInfo {
 }

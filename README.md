@@ -138,14 +138,7 @@ The Swagger UI provides:
 - **PUT** `/api/users/{id}` - Update user
 - **DELETE** `/api/users/{id}` - Delete user
 
-#### Products (Authenticated)
-- **POST** `/api/products` - Create new product
-- **PUT** `/api/products/{id}` - Update product
-- **DELETE** `/api/products/{id}` - Delete product
 
----
-
-## Product API CRUD Details
 
 ### Product Model Structure
 
@@ -160,40 +153,6 @@ Fields:
 - `stock` - Stock quantity (required, integer)
 - `image` - Product image path (optional)
 - `created_at`, `updated_at` - Timestamps
-
-### Create Product
-
-**Endpoint**: `POST /api/products`
-
-**Authentication**: Required (Bearer Token)
-
-**Note**: Product is automatically assigned `user_id=1` (default vendor/admin user)
-
-**Request Body**:
-```json
-{
-  "name": "Laptop Pro",
-  "description": "High-performance laptop",
-  "price": 1299.99,
-  "stock": 50,
-  "image": "/images/laptop.jpg"
-}
-```
-
-**Success Response** (201):
-```json
-{
-  "id": 1,
-  "user_id": 1,
-  "name": "Laptop Pro",
-  "description": "High-performance laptop",
-  "price": "1299.99",
-  "stock": 50,
-  "image": "/images/laptop.jpg",
-  "created_at": "2026-02-06T10:30:00Z",
-  "updated_at": "2026-02-06T10:30:00Z"
-}
-```
 
 ### Get All Products
 
@@ -266,143 +225,6 @@ Fields:
 }
 ```
 
-### Update Product
-
-**Endpoint**: `PUT /api/products/{id}`
-
-**Authentication**: Required (Bearer Token)
-
-**Note**: Product is automatically updated with `user_id=1` (default vendor/admin user)
-
-**Example**: `/api/products/1`
-
-**Request Body** (all fields optional):
-```json
-{
-  "name": "Laptop Pro Max",
-  "price": 1599.99,
-  "stock": 45,
-  "image": "/images/laptop-max.jpg"
-}
-```
-
-**Success Response** (200):
-```json
-{
-  "id": 1,
-  "user_id": 1,
-  "name": "Laptop Pro Max",
-  "description": "High-performance laptop",
-  "price": "1599.99",
-  "stock": 45,
-  "image": "/images/laptop-max.jpg",
-  "created_at": "2026-02-06T10:30:00Z",
-  "updated_at": "2026-02-06T10:35:00Z"
-}
-```
-
-### Delete Product
-
-**Endpoint**: `DELETE /api/products/{id}`
-
-**Authentication**: Required (Bearer Token)
-
-**Note**: Before deletion, product user_id is set to 1 (default vendor/admin user)
-
-**Example**: `/api/products/1`
-
-**Success Response** (204):
-- No content
-
-**Error Response** (404):
-```json
-{
-  "message": "Not found"
-}
-```
-
----
-
-## Validation Rules
-
-### Store Product (Create)
-
-| Field | Rules |
-|-------|-------|
-| name | required, string, max:255, unique |
-| description | nullable, string |
-| price | required, numeric, min:0, max:999999.99 |
-| stock | required, integer, min:0 |
-| image | nullable, string, max:500 |
-
-### Update Product
-
-| Field | Rules |
-|-------|-------|
-| name | sometimes, string, max:255, unique |
-| description | nullable, string |
-| price | sometimes, numeric, min:0, max:999999.99 |
-| stock | sometimes, integer, min:0 |
-| image | nullable, string, max:500 |
-
----
-
-## File Structure
-
-### Product API Files Created
-
-```
-app/
-├── Models/
-│   └── Product.php                 # Product model with relationships
-├── Http/
-│   ├── Controllers/Api/
-│   │   └── ProductController.php   # CRUD operations with Swagger docs
-│   ├── Requests/
-│   │   ├── StoreProductRequest.php # Validation for create
-│   │   └── UpdateProductRequest.php # Validation for update
-│   └── Resources/
-│       └── ProductResource.php     # API response formatting
-```
-
-### Routes
-
-File: [routes/api.php](routes/api.php)
-
-```php
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index']);   // Public
-    Route::get('{product}', [ProductController::class, 'show']); // Public
-    Route::post('/', [ProductController::class, 'store'])->middleware('bearer-token');  // Auth required
-    Route::put('{product}', [ProductController::class, 'update'])->middleware('bearer-token'); // Auth required
-    Route::delete('{product}', [ProductController::class, 'destroy'])->middleware('bearer-token'); // Auth required
-});
-```
-
-## Database Schema
-
-### Tables
-- `users` - User accounts with roles
-- `products` - Product inventory
-- `orders` - Customer orders
-- `order_items` - Order line items
-- `personal_access_tokens` - API authentication tokens
-
-## API Authentication
-
-### Create Admin Token (for testing)
-```php
-$user = App\Models\User::where('email', 'admin@digihost.com')->first();
-$token = $user->createToken('api-token')->plainTextToken;
-echo $token; // Copy this token
-```
-
-### Authenticate Requests
-1. Open Swagger UI: http://localhost:8000/api/documentation
-2. Click **Authorize** button
-3. Select `bearerAuth` 
-4. Paste your token (with or without `Bearer ` prefix)
-
 ### Protected Routes (Admin Only)
 - `POST /api/users` - Create user
 - `PUT /api/users/{id}` - Update user
@@ -447,3 +269,33 @@ For issues and questions, please open a [GitHub Issue](https://github.com/Santos
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+---
+
+## Orders API & Swagger Notes
+
+This project includes an `Order` and `OrderItem` API to manage customer orders. Below are quick references and notes about how the API is presented in the bundled Swagger UI.
+
+- API Base URL: `http://localhost:8000/api`
+- Swagger UI: `http://localhost:8000/api/documentation`
+
+Important presentation notes:
+- The Schemas/Models panel in the Swagger UI has been disabled to simplify the view. If you need to inspect schemas, open `storage/api-docs/api-docs.json` or re-enable models in the published view.
+- Tags ordering has been preserved (AUTH, USERS, PRODUCTS, ORDER) to surface key groups first.
+
+### Quick Order Endpoints Reference
+
+- `GET /api/orders` — List orders (paginated). Returns `order_items` for each order.
+- `GET /api/orders/{id}` — Get order details (includes `order_items`).
+```
+
+### Order Model Fields
+
+- `id`, `user_id`, `total_amount`, `status`, `created_at`, `updated_at`
+
+### OrderItem Model Fields
+
+- `id`, `order_id`, `product_id`, `quantity`, `price`, `created_at`, `updated_at`
+
+If you'd like, I can also add a short `curl` example or expand the README with sample authenticated requests for Orders.

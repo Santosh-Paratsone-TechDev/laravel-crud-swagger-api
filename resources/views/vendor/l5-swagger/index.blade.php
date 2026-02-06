@@ -153,9 +153,16 @@
                 SwaggerUIBundle.plugins.DownloadUrl
             ],
 
+            // preserve tag order as defined in the OpenAPI `tags` array
+            tagsSorter: null,
+
             layout: "StandaloneLayout",
             docExpansion : "{!! config('l5-swagger.defaults.ui.display.doc_expansion', 'none') !!}",
             deepLinking: true,
+            // Hide models/schemas accordion
+            displayModels: false,
+            defaultModelsExpandDepth: -1,
+            defaultModelExpandDepth: -1,
             filter: {!! config('l5-swagger.defaults.ui.display.filter') ? 'true' : 'false' !!},
             persistAuthorization: "{!! config('l5-swagger.defaults.ui.authorization.persist_authorization') ? 'true' : 'false' !!}",
 
